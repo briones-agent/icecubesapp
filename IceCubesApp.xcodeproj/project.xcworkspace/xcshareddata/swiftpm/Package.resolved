@@ -1,5 +1,5 @@
 {
-  "originHash" : "6fb708f65efdd6275739d2f08c34d39d4a1a4365f8938219b50b3bc983adbc46",
+  "originHash" : "ee3cb20dfd3f474392e51e48c1cc2fffbd4c9197a4dc6659a1a51e7b42e4c33a",
   "pins" : [
     {
       "identity" : "bodega",
@@ -26,6 +26,15 @@
       "state" : {
         "branch" : "fix-ios26",
         "revision" : "3b11459a19c9406176a08b0f0599b98f88113296"
+      }
+    },
+    {
+      "identity" : "expo-brownfield-shared-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/briones-agent/expo-brownfield-shared-ios",
+      "state" : {
+        "branch" : "main",
+        "revision" : "123f9f0063a64affd99cc449593428acb1a2c22b"
       }
     },
     {
