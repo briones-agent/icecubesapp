@@ -1,3 +1,41 @@
+# Ice Cubes + React Native
+
+Experimental fork of [Ice Cubes](https://github.com/Dimillian/IceCubesApp) testing brownfield
+support for existing iOS codebases. Commits serve as reference for integrating React Native (via
+Expo) into an existing native app without refactoring the project structure.
+
+Uses Expo's brownfield **isolated** approach via the shared prebuilt Swift package
+[`expo-brownfield-shared-ios`](https://github.com/briones-agent/expo-brownfield-shared-ios)
+(product `ExpoBrownfieldPackage`, module `ExpoBrownfieldKit`) — the RN screen is built once there and
+embedded here as a normal SPM dependency. A floating "Expo" button presents the React Native screen.
+
+## Integration steps
+
+1. Add the `ExpoBrownfieldPackage` Swift Package dependency (this fork points at the shared repo`s
+   `main` branch) to the **IceCubesApp** target.
+2. Add `ExpoIntegration.swift` and bootstrap it from `AppDelegate`:
+   ```swift
+   import ExpoBrownfieldKit
+   // didFinishLaunchingWithOptions:
+   ExpoIntegration.bootstrap()   // ReactNativeHostManager.shared.initialize() + floating button
+   ```
+3. The button presents `ReactNativeViewController(moduleName: "main")` on a dedicated overlay
+   `UIWindow` (so it works regardless of the app`s scene/navigation).
+
+### Notes
+
+- Copy `IceCubesApp.xcconfig.template` → `IceCubesApp.xcconfig` before building (the project references
+  it; a placeholder team id is fine for a simulator build).
+- Deployment target is already ≥ 16.4 (the shared package requires it).
+- `ExpoIntegration.openExpo()` calls `endEditing(true)` on the scene windows first, so a focused host
+  keyboard (Ice Cubes auto-focuses its instance field) doesn`t sit over the RN screen.
+- Build for the simulator with `CODE_SIGNING_ALLOWED=NO` (no signing needed).
+
+---
+
+<details>
+<summary>Ice Cubes (original README)</summary>
+
 # IceCubesApp
 
 [![Download on the App Store](Images/download_on_the_app_store.svg)](https://apps.apple.com/us/app/ice-cubes-for-mastodon/id6444915884)
@@ -160,3 +198,6 @@ cp IceCubesApp.xcconfig.template IceCubesApp.xcconfig
 
 3. Fill in the `DEVELOPMENT_TEAM` and `BUNDLE_ID_PREFIX` values. The first should have your Apple Team ID (which you can find by logging into the Apple Developer Portal). The latter is your domain in reverse notation or whatever you use as the prefix for your projects.
 4. Save your changes, and then you should be able to compile the project without any issues.
+
+
+</details>
